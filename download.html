@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rider Slip Downloader</title>
+</head>
+<body>
+
+  <label for="riderId">Enter Rider ID:</label>
+  <input type="text" id="riderId" placeholder="Enter Rider ID">
+  <button onclick="searchAndDownload()">Search and Download</button>
+  <p id="errorMsg" style="color: red;"></p>
+
+  <script>
+    function searchAndDownload() {
+      var riderId = document.getElementById('riderId').value.trim();
+
+      if (riderId !== '') {
+        var pdfUrl = `files/${riderId}.pdf`;
+
+        // Check if the PDF file exists
+        fetch(pdfUrl)
+          .then(response => {
+            if (response.ok) {
+              // If the PDF file exists, trigger download
+              window.open(pdfUrl, '_blank');
+              document.getElementById('errorMsg').innerText = '';
+            } else {
+              // If the PDF file does not exist, display an error message
+              document.getElementById('errorMsg').innerText = 'No file found for the given Rider ID.';
+            }
+          })
+          .catch(error => {
+            console.error('Error checking PDF existence:', error);
+            document.getElementById('errorMsg').innerText = 'An error occurred while checking for the file.';
+          });
+      } else {
+        // Display an error message if no Rider ID is entered
+        document.getElementById('errorMsg').innerText = 'Please enter a Rider ID.';
+      }
+    }
+  </script>
+
+</body>
+</html>
 
